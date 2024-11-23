@@ -60,9 +60,11 @@ else
 fi
 
 # Synchronize template files
-echo "Synchronizing template files..."
-if [[ -d "./template/" ]]; then
-    rsync -r ./template/ /usr/local/hestia/data/templates/web/nginx/
+HESTIA_WEB_NGINX_TEMPLATE_SRC_DIR="./template/"
+HESTIA_WEB_NGINX_TEMPLATE_DIR="/usr/local/hestia/data/templates/web/nginx/"
+if [[ -d "$HESTIA_WEB_NGINX_TEMPLATE_SRC_DIR" ]]; then
+    echo "Synchronizing template files to $HESTIA_WEB_NGINX_TEMPLATE_DIR..."
+    rsync -r $HESTIA_WEB_NGINX_TEMPLATE_SRC_DIR $HESTIA_WEB_NGINX_TEMPLATE_DIR
     if [[ $? -eq 0 ]]; then
         echo "Template files synchronized successfully."
     else
@@ -70,17 +72,20 @@ if [[ -d "./template/" ]]; then
         exit 1
     fi
 else
-    echo "Template directory './template/' does not exist. Skipping synchronization."
+    echo "Template directory '$HESTIA_WEB_NGINX_TEMPLATE_SRC_DIR' does not exist. Skipping synchronization."
 fi
 
 # Copy the v-start-pm2 script to bin directory
-echo "Copying v-start-pm2..."
-if [[ -f "./bin/v-start-pm2" ]]; then
-    cp "./bin/v-start-pm2" "/usr/local/hestia/bin/"
-    chmod +x "/usr/local/hestia/bin/v-start-pm2"
-    echo "v-start-pm2 copied and made executable successfully."
+HESTIA_BIN_SRC_DIR="./bin"
+HESTIA_BIN_DIR="/usr/local/hestia/bin"
+HESTIA_PM2_SCRIPT_NAME="v-start-pm2"
+if [[ -f "$HESTIA_BIN_SRC_DIR/$HESTIA_PM2_SCRIPT_NAME" ]]; then
+    echo "Copying $HESTIA_PM2_SCRIPT_NAME to $HESTIA_BIN_DIR..."
+    rsync -av --progress "$HESTIA_BIN_SRC_DIR/$HESTIA_PM2_SCRIPT_NAME" "$HESTIA_BIN_DIR/"
+    chmod +x "$HESTIA_BIN_DIR/$HESTIA_PM2_SCRIPT_NAME"
+    echo "$HESTIA_PM2_SCRIPT_NAME copied and made executable successfully."
 else
-    echo "v-start-pm2 script not found at './bin/'. Skipping this step."
+    echo "$HESTIA_PM2_SCRIPT_NAME script not found at '$HESTIA_BIN_SRC_DIR'. Skipping this step."
 fi
 
 # Notify installation has finished
