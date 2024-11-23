@@ -10,42 +10,10 @@ else
     # Define the repository for NVM
     NVM_REPO="nvm-sh/nvm";
 
-    # Function to fetch the latest release version from GitHub
-    git_latest_version() {
-        # The first argument passed to the function should be the repository name
-        local repo="$1"
-    
-        # Construct the URL for the latest release
-        url="https://github.com/$repo/releases/latest"
-        
-        # Fetch the latest release URL
-        response=$(curl -fsSL -o /dev/null -w "%{redirect_url}" "$url")
-    
-        # Debug: Print the response to check the URL
-        echo "Request URL: $url Response URL: $response"
-    
-        # Check if the response is empty or returned a 404 error
-        if [ -z "$response" ]; then
-            echo "Error: Could not find the latest release for $repo. Please check the repository name."
-            return 1
-        else
-            # Extract the latest version by getting the basename of the redirect URL
-            latest_version=$(echo "$response" | xargs basename)
-            echo "Latest Version: $latest_version"
-        fi
-    
-        # Validate if the latest version follows semantic versioning format (e.g., v1.2.3, 1.2.3, etc.)
-        if [[ ! "$latest_version" =~ ^v?[0-9]+\.[0-9]+\.[0-9]+(-[A-Za-z0-9-]+(?:\.[A-Za-z0-9-]+)*)?(\+[A-Za-z0-9-]+(?:\.[A-Za-z0-9-]+)*)?$ ]]; then
-            echo "Error: Invalid version format. Version '$latest_version' does not match semantic versioning."
-            return 1
-        fi
-    
-        # Return the valid version if it matches the semver format
-        echo "$latest_version"
-    }
-
     # Fetch the latest version number of NVM
-    LATEST_VERSION=$(git_latest_version "$NVM_REPO")
+    LATEST_VERSION=$(curl -s "https://api.github.com/repos/$NVM_REPO/releases/latest" \
+        | grep "tag_name" \
+        | cut -d '"' -f 4)
 
     if [[ -z "$LATEST_VERSION" ]]; then
         echo "Failed to retrieve the latest NVM version."
