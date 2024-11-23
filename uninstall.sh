@@ -10,6 +10,11 @@ if [[ -d "/opt/nvm" ]]; then
     sed -i '/\[ -s "\$NVM_DIR\/nvm.sh" \] && \. "\$NVM_DIR\/nvm.sh"/d' ~/.bashrc ~/.zshrc
     sed -i '/\[ -s "\$NVM_DIR\/bash_completion" \] && \. "\$NVM_DIR\/bash_completion"/d' ~/.bashrc ~/.zshrc
     sed -i '/export PATH="\/opt\/nvm:\$PATH"/d' ~/.bashrc ~/.zshrc
+    # Remove global NVM environment settings from system-wide files
+    sudo sed -i '/export NVM_DIR=\/opt\/nvm/d' /etc/profile
+    sudo sed -i '/\[ -s "\$NVM_DIR\/nvm.sh" \] && \. "\$NVM_DIR\/nvm.sh"/d' /etc/profile
+    sudo sed -i '/\[ -s "\$NVM_DIR\/bash_completion" \] && \. "\$NVM_DIR\/bash_completion"/d' /etc/profile
+    sudo sed -i '/export PATH="\/opt\/nvm:\$PATH"/d' /etc/profile
     echo "NVM and Node.js removed."
 else
     echo "NVM is not installed. Skipping NVM removal."
