@@ -91,7 +91,7 @@ HESTIA_WEB_NGINX_TEMPLATE_SRC_DIR="./template/"
 HESTIA_WEB_NGINX_TEMPLATE_DIR="/usr/local/hestia/data/templates/web/nginx/"
 if [[ -d "$HESTIA_WEB_NGINX_TEMPLATE_SRC_DIR" ]]; then
     echo "Synchronizing template files to $HESTIA_WEB_NGINX_TEMPLATE_DIR..."
-    rsync -r $HESTIA_WEB_NGINX_TEMPLATE_SRC_DIR $HESTIA_WEB_NGINX_TEMPLATE_DIR
+    rsync -av --progress $HESTIA_WEB_NGINX_TEMPLATE_SRC_DIR $HESTIA_WEB_NGINX_TEMPLATE_DIR
     if [[ $? -eq 0 ]]; then
         echo "Template files synchronized successfully."
     else
