@@ -1,0 +1,53 @@
+#!/bin/bash
+# info: start Node.js apps in PM2 for all users and domains
+# options: None
+#
+# example: v-start-all-pm2
+#
+# This function starts Node.js apps in PM2 for all users with Node.js configured domains
+#----------------------------------------------------------#
+#                Variables & Functions                     #
+#----------------------------------------------------------#
+
+# Includes
+# shellcheck source=/etc/hestiacp/hestia.conf
+source /etc/hestiacp/hestia.conf
+# shellcheck source=/usr/local/hestia/func/main.sh
+source $HESTIA/func/main.sh
+# shellcheck source=/usr/local/hestia/func/domain.sh
+source $HESTIA/func/domain.sh
+# load config file
+source_conf "$HESTIA/conf/hestia.conf"
+
+#----------------------------------------------------------#
+#                    Verifications                         #
+#----------------------------------------------------------#
+
+# Loop through all users
+for u in `"$HESTIA"/bin/v-list-users plain | cut -f1`; do
+    home=$(grep "^$u:" /etc/passwd | cut -d":" -f6)
+
+    # Loop through all Node.js domains for the user
+    for domain in `"$HESTIA"/bin/v-list-web-domains $u plain | cut -f1,18 | grep $'\t'"nodeJS$" | cut -f1`; do
+        # Path to the ecosystem.config.js file for the domain
+        ecosystem="$home/web/$domain/private/node/ecosystem.config.js"
+
+        # Check if the ecosystem.config.js file exists
+        if [ -f "$ecosystem" ]; then
+            echo "Starting PM2 for user $u's domain $domain with $ecosystem..."
+            # Start the Node.js app using pm2 for the current domain
+            /usr/sbin/runuser -l $u -c "pm2 start \"$ecosystem\"" &> /dev/null
+
+            # Check if pm2 started successfully
+            if [ $? -eq 0 ]; then
+                echo "Successfully started PM2 for $u's domain $domain."
+            else
+                echo "Failed to start PM2 for $u's domain $domain."
+            fi
+        else
+            echo "No ecosystem.config.js found for $u's domain $domain. Skipping..."
+        fi
+    done
+done
+
+echo "v-start-all-pm2 script completed."
