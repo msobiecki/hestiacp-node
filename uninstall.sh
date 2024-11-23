@@ -46,7 +46,7 @@ if [[ -f "$HESTIA_BIN_DIR/$HESTIA_PM2_SCRIPT_NAME" ]]; then
     rm -f "$HESTIA_BIN_DIR/$HESTIA_PM2_SCRIPT_NAME"
     echo "$HESTIA_PM2_SCRIPT_NAME removed."
 else
-    echo "$HESTIA_PM2_SCRIPT_NAME not found in $HESTIA_BIN_DIR. Skipping this step."
+    echo "$HESTIA_PM2_SCRIPT_NAME not found in $HESTIA_BIN_DIR. Skipping bin removal."
 fi
 
 # Notify uninstallation has finished
