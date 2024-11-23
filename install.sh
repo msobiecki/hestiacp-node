@@ -112,7 +112,7 @@ if [[ -d "$HESTIA_BIN_SRC_DIR" ]]; then
     rsync -av --progress "$HESTIA_BIN_SRC_DIR/" "$HESTIA_BIN_DIR/"
 
     # Make all the copied files executable
-    chmod +x "$HESTIA_BIN_DIR"/*
+    chmod +x "$HESTIA_BIN_DIR"/* "$HESTIA_BIN_DIR"/*/*
 
     echo "All files from $HESTIA_BIN_SRC_DIR copied and made executable successfully."
 else
