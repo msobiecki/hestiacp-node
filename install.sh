@@ -75,17 +75,21 @@ else
     echo "Template directory '$HESTIA_WEB_NGINX_TEMPLATE_SRC_DIR' does not exist. Skipping synchronization."
 fi
 
-# Copy the v-start-pm2 script to bin directory
+# Synchronize bin files
 HESTIA_BIN_SRC_DIR="./bin"
 HESTIA_BIN_DIR="/usr/local/hestia/bin"
-HESTIA_PM2_SCRIPT_NAME="v-start-pm2"
-if [[ -f "$HESTIA_BIN_SRC_DIR/$HESTIA_PM2_SCRIPT_NAME" ]]; then
-    echo "Copying $HESTIA_PM2_SCRIPT_NAME to $HESTIA_BIN_DIR..."
-    rsync -av --progress "$HESTIA_BIN_SRC_DIR/$HESTIA_PM2_SCRIPT_NAME" "$HESTIA_BIN_DIR/"
-    chmod +x "$HESTIA_BIN_DIR/$HESTIA_PM2_SCRIPT_NAME"
-    echo "$HESTIA_PM2_SCRIPT_NAME copied and made executable successfully."
+if [[ -d "$HESTIA_BIN_SRC_DIR" ]]; then
+    echo "Syncing files from $HESTIA_BIN_SRC_DIR to $HESTIA_BIN_DIR..."
+
+    # Use rsync to copy all files from the source to the destination
+    rsync -av --progress "$HESTIA_BIN_SRC_DIR/" "$HESTIA_BIN_DIR/"
+
+    # Make all the copied files executable
+    chmod +x "$HESTIA_BIN_DIR"/*
+
+    echo "All files from $HESTIA_BIN_SRC_DIR copied and made executable successfully."
 else
-    echo "$HESTIA_PM2_SCRIPT_NAME script not found at '$HESTIA_BIN_SRC_DIR'. Skipping this step."
+    echo "Source directory '$HESTIA_BIN_SRC_DIR' not found. Skipping this step."
 fi
 
 # Notify installation has finished
