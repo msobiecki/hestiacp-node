@@ -8,7 +8,7 @@ else
     echo "Preinstalling NVM..."
 
     # Define the repository for NVM
-    nvm_string="nvm-sh/nvm";
+    NVM_REPO="nvm-sh/nvm";
 
     # Function to fetch the latest release version from GitHub
     git_latest_version() {
