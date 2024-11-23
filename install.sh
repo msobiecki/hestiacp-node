@@ -12,15 +12,18 @@ else
 
     # Function to fetch the latest release version from GitHub
     git_latest_version() {
+        # The first argument passed to the function should be the repository name
+        local repo="$1"
+
         # Construct the URL for the latest release
-        url="https://github.com/$1/releases/latest"
+        url="https://github.com/$repo/releases/latest"
         
         # Fetch the latest release URL
         response=$(curl -fsSL -o /dev/null -w "%{redirect_url}" "$url")
     
         # Check if the response is empty or returned a 404 error
         if [ -z "$response" ]; then
-            echo "Error: Could not find the latest release for $1. Please check the repository name."
+            echo "Error: Could not find the latest release for $repo. Please check the repository name."
             return 1
         else
             # Extract the latest version by getting the basename of the redirect URL
