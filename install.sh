@@ -72,3 +72,9 @@ if [[ -d "./template/" ]]; then
 else
     echo "Template directory './template/' does not exist. Skipping synchronization."
 fi
+
+# Notify installation has finished
+echo "Sending installation notification..."
+/usr/local/hestia/bin/v-add-user-notification admin "Node setup" "Node setup installer has finished installing."
+
+echo "Installation completed."
