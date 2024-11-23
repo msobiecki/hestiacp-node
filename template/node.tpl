@@ -20,7 +20,7 @@ server {
 	}
 
 	location / {
-	    	proxy_pass http://unix:%home%/%user%/web/%domain%/private/node/app.sock;
+		proxy_pass http://unix:%home%/%user%/web/%domain%/private/node/app.sock;
 
         	# Proxy headers for WebSocket support
         	proxy_http_version 1.1;
