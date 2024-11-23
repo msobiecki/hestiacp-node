@@ -38,4 +38,8 @@ else
     echo "Template directory does not exist. Skipping template file removal."
 fi
 
-echo "Uninstallation process completed."
+# Notify uninstallation has finished
+echo "Sending uninstallation notification..."
+/usr/local/hestia/bin/v-add-user-notification admin "Node application setup" "Node application setup has been uninstalled."
+
+echo "Uninstallation completed."
