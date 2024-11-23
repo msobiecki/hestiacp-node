@@ -32,8 +32,16 @@ else
             # Extract the latest version by getting the basename of the redirect URL
             latest_version=$(echo "$response" | xargs basename)
             echo "Latest Version: $latest_version"
-            echo "$latest_version"
         fi
+    
+        # Validate if the latest version follows semantic versioning format (e.g., v1.2.3, 1.2.3, etc.)
+        if [[ ! "$latest_version" =~ ^v?[0-9]+\.[0-9]+\.[0-9]+(-[A-Za-z0-9-]+(?:\.[A-Za-z0-9-]+)*)?(\+[A-Za-z0-9-]+(?:\.[A-Za-z0-9-]+)*)?$ ]]; then
+            echo "Error: Invalid version format. Version '$latest_version' does not match semantic versioning."
+            return 1
+        fi
+    
+        # Return the valid version if it matches the semver format
+        echo "$latest_version"
     }
 
     # Fetch the latest version number of NVM
