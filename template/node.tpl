@@ -20,7 +20,7 @@ server {
 	}
 
 	location / {
-	    	proxy_pass http://unix:%home%/%user%/web/%domain%/private/node/app.sock:;
+	    	proxy_pass http://unix:%home%/%user%/web/%domain%/private/node/app.sock;
 
         	# Proxy headers for WebSocket support
         	proxy_http_version 1.1;
@@ -29,6 +29,10 @@ server {
         	proxy_set_header Host $host;
         	proxy_cache_bypass $http_upgrade;
 
+	}
+
+	location @fallback {
+		proxy_pass http://unix:%home%/%user%/web/%domain%/private/node/app.sock;
 	}
 
 	location /error/ {
