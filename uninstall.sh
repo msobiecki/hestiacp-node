@@ -29,25 +29,24 @@ else
 fi
 
 # Remove synchronized template files
-TEMPLATE_DIR="/usr/local/hestia/data/templates/web/nginx/"
-if [[ -d "${TEMPLATE_DIR}" ]]; then
-    echo "Removing synchronized template files..."
-    find "${TEMPLATE_DIR}" -type f -exec rm -f {} +
-    echo "Template files removed from ${TEMPLATE_DIR}."
+HESTIA_WEB_NGINX_TEMPLATE_DIR="/usr/local/hestia/data/templates/web/nginx/"
+if [[ -d "$HESTIA_WEB_NGINX_TEMPLATE_DIR" ]]; then
+    echo "Removing synchronized template files from $HESTIA_WEB_NGINX_TEMPLATE_DIR..."
+    find "$HESTIA_WEB_NGINX_TEMPLATE_DIR" -type f -exec rm -f {} +
+    echo "Template files removed."
 else
     echo "Template directory does not exist. Skipping template file removal."
 fi
 
-# Remove the v-start-pm2 script from HestiaCP's bin directory
-DEST_DIR="/usr/local/hestia/bin"
-SCRIPT_NAME="v-start-pm2"
-DEST_SCRIPT="$DEST_DIR/$SCRIPT_NAME"
-if [[ -f "$DEST_SCRIPT" ]]; then
-    echo "Removing $SCRIPT_NAME from $DEST_DIR..."
-    rm -f "$DEST_SCRIPT"
-    echo "$SCRIPT_NAME removed successfully."
+# Remove the v-start-pm2 script from bin directory
+HESTIA_BIN_DIR="/usr/local/hestia/bin"
+HESTIA_PM2_SCRIPT_NAME="v-start-pm2"
+if [[ -f "$HESTIA_BIN_DIR/$HESTIA_PM2_SCRIPT_NAME" ]]; then
+    echo "Removing $HESTIA_PM2_SCRIPT_NAME from $HESTIA_BIN_DIR..."
+    rm -f "$HESTIA_BIN_DIR/$HESTIA_PM2_SCRIPT_NAME"
+    echo "$HESTIA_PM2_SCRIPT_NAME removed."
 else
-    echo "$SCRIPT_NAME not found in $DEST_DIR. Skipping this step."
+    echo "$HESTIA_PM2_SCRIPT_NAME not found in $HESTIA_BIN_DIR. Skipping this step."
 fi
 
 # Copy the v-start-pm2 script to bin directory
