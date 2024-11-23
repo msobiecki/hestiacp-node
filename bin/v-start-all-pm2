@@ -35,8 +35,10 @@ for u in `"$HESTIA"/bin/v-list-users plain | cut -f1`; do
         # Check if the ecosystem.config.js file exists
         if [ -f "$ecosystem" ]; then
             echo "Starting PM2 for user $u's domain $domain with $ecosystem..."
-            # Start the Node.js app using pm2 for the current domain
-            /usr/sbin/runuser -l $u -c "pm2 start \"$ecosystem\"" &> /dev/null
+
+            # Using the v-start-pm2 approach to start the app
+            entrypoint="ecosystem.config.js"  # Assuming 'ecosystem.config.js' as the entrypoint
+            /usr/local/hestia/bin/v-start-pm2 $u $domain $entrypoint
 
             # Check if pm2 started successfully
             if [ $? -eq 0 ]; then
