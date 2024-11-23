@@ -19,6 +19,12 @@ if [[ -d "/opt/nvm" ]]; then
     sudo sed -i "/\[ -s '\$NVM_DIR\/nvm.sh' \] && \. '\$NVM_DIR\/nvm.sh'/d" /root/.profile
     sudo sed -i "/\[ -s '\$NVM_DIR\/bash_completion' \] && \. '\$NVM_DIR\/bash_completion'/d" /root/.profile
 
+    # Apply the changes
+    source /etc/profile
+
+    # Source /root/.profile for root-specific changes
+    source /root/.profile
+    
     echo "NVM and Node.js removed."
 else
     echo "NVM is not installed. Skipping NVM removal."
