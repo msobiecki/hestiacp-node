@@ -14,12 +14,15 @@ else
     git_latest_version() {
         # The first argument passed to the function should be the repository name
         local repo="$1"
-
+    
         # Construct the URL for the latest release
         url="https://github.com/$repo/releases/latest"
         
         # Fetch the latest release URL
         response=$(curl -fsSL -o /dev/null -w "%{redirect_url}" "$url")
+    
+        # Debug: Print the response to check the URL
+        echo "Response URL: $response"
     
         # Check if the response is empty or returned a 404 error
         if [ -z "$response" ]; then
@@ -27,7 +30,9 @@ else
             return 1
         else
             # Extract the latest version by getting the basename of the redirect URL
-            echo "$response" | xargs basename
+            latest_version=$(echo "$response" | xargs basename)
+            echo "Latest Version: $latest_version"
+            echo "$latest_version"
         fi
     }
 
