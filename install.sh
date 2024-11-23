@@ -31,9 +31,15 @@ else
     
     # Set up environment variables for NVM system-wide
     echo "export NVM_DIR='/opt/nvm'" | sudo tee -a /etc/profile
-    echo "[ -s '$NVM_DIR/nvm.sh' ] && . '$NVM_DIR/nvm.sh'" | sudo tee -a /etc/profile
-    echo "[ -s '$NVM_DIR/bash_completion' ] && . '$NVM_DIR/bash_completion'" | sudo tee -a /etc/profile
-    echo "export PATH='/opt/nvm:$PATH'" | sudo tee -a /etc/profile
+    echo "[ -s '\$NVM_DIR/nvm.sh' ] && . '\$NVM_DIR/nvm.sh'" | sudo tee -a /etc/profile
+    echo "[ -s '\$NVM_DIR/bash_completion' ] && . '\$NVM_DIR/bash_completion'" | sudo tee -a /etc/profile
+    echo "export PATH='/opt/nvm:\$PATH'" | sudo tee -a /etc/profile
+
+    # Also add to root's environment files
+    echo "export NVM_DIR='/opt/nvm'" | sudo tee -a /root/.profile
+    echo "[ -s '\$NVM_DIR/nvm.sh' ] && . '\$NVM_DIR/nvm.sh'" | sudo tee -a /root/.profile
+    echo "[ -s '\$NVM_DIR/bash_completion' ] && . '\$NVM_DIR/bash_completion'" | sudo tee -a /root/.profile
+    echo "export PATH='/opt/nvm:\$PATH'" | sudo tee -a /root/.profile
 
     # Apply the changes
     source /etc/profile
