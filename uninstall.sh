@@ -6,11 +6,6 @@ echo "Starting the uninstallation process..."
 if [[ -d "/opt/nvm" ]]; then
     echo "Removing NVM and Node.js..."
     rm -rf /opt/nvm
-    sed -i '/export NVM_DIR=\/opt\/nvm/d' ~/.bashrc ~/.zshrc
-    sed -i '/\[ -s "\$NVM_DIR\/nvm.sh" \] && \. "\$NVM_DIR\/nvm.sh"/d' ~/.bashrc ~/.zshrc
-    sed -i '/\[ -s "\$NVM_DIR\/bash_completion" \] && \. "\$NVM_DIR\/bash_completion"/d' ~/.bashrc ~/.zshrc
-    sed -i '/export PATH="\/opt\/nvm:\$PATH"/d' ~/.bashrc ~/.zshrc
-    # Remove global NVM environment settings from system-wide files
     sudo sed -i '/export NVM_DIR=\/opt\/nvm/d' /etc/profile
     sudo sed -i '/\[ -s "\$NVM_DIR\/nvm.sh" \] && \. "\$NVM_DIR\/nvm.sh"/d' /etc/profile
     sudo sed -i '/\[ -s "\$NVM_DIR\/bash_completion" \] && \. "\$NVM_DIR\/bash_completion"/d' /etc/profile
