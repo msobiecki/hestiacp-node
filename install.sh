@@ -75,6 +75,6 @@ fi
 
 # Notify installation has finished
 echo "Sending installation notification..."
-/usr/local/hestia/bin/v-add-user-notification admin "Node setup" "Node setup installer has finished installing."
+/usr/local/hestia/bin/v-add-user-notification admin "Node application setup" "Node application setup has finished installing."
 
 echo "Installation completed."
