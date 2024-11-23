@@ -30,14 +30,14 @@ for u in `"$HESTIA"/bin/v-list-users plain | cut -f1`; do
     # Loop through all Node.js domains for the user
     for domain in `"$HESTIA"/bin/v-list-web-domains $u plain | cut -f1,18 | grep $'\t'"node$" | cut -f1`; do
         # Path to the ecosystem.config.js file for the domain
-        ecosystem="$home/web/$domain/private/node/ecosystem.config.js"
+        entrypoint="ecosystem.config.js"
+        entrypoint_path="$home/web/$domain/private/node/$entrypoint"
 
         # Check if the ecosystem.config.js file exists
-        if [ -f "$ecosystem" ]; then
+        if [ -f "$entrypoint_path" ]; then
             echo "Starting PM2 for user $u's domain $domain with $ecosystem..."
 
             # Using the v-start-pm2 approach to start the app
-            entrypoint="ecosystem.config.js"  # Assuming 'ecosystem.config.js' as the entrypoint
             /usr/local/hestia/bin/v-start-pm2 $u $domain $entrypoint
 
             # Check if pm2 started successfully
@@ -55,10 +55,10 @@ for u in `"$HESTIA"/bin/v-list-users plain | cut -f1`; do
                 log_event "$ERROR" "$ARGUMENTS"
             fi
         else
-            echo "No ecosystem.config.js found for $u's domain $domain. Skipping..."
+            echo "No $entrypoint found for $u's domain $domain. Skipping..."
 
             # Logging the missing ecosystem.config.js
-            $BIN/v-log-action "$u" "Warning" "Web" "No ecosystem.config.js found for domain $domain."
+            $BIN/v-log-action "$u" "Warning" "Web" "No $entrypoint found for domain $domain."
             log_event "$WARNING" "$ARGUMENTS"
         fi
     done
