@@ -38,6 +38,28 @@ else
     echo "Template directory does not exist. Skipping template file removal."
 fi
 
+# Remove the v-start-pm2 script from HestiaCP's bin directory
+DEST_DIR="/usr/local/hestia/bin"
+SCRIPT_NAME="v-start-pm2"
+DEST_SCRIPT="$DEST_DIR/$SCRIPT_NAME"
+if [[ -f "$DEST_SCRIPT" ]]; then
+    echo "Removing $SCRIPT_NAME from $DEST_DIR..."
+    rm -f "$DEST_SCRIPT"
+    echo "$SCRIPT_NAME removed successfully."
+else
+    echo "$SCRIPT_NAME not found in $DEST_DIR. Skipping this step."
+fi
+
+# Copy the v-start-pm2 script to bin directory
+echo "Copying v-start-pm2..."
+if [[ -f "./bin/v-start-pm2" ]]; then
+    cp "./bin/v-start-pm2" "/usr/local/hestia/bin/"
+    chmod +x "/usr/local/hestia/bin/v-start-pm2"
+    echo "v-start-pm2 copied and made executable successfully."
+else
+    echo "v-start-pm2 script not found at './bin/'. Skipping this step."
+fi
+
 # Notify uninstallation has finished
 echo "Sending uninstallation notification..."
 /usr/local/hestia/bin/v-add-user-notification admin "Node application setup" "Node application setup has been uninstalled."
