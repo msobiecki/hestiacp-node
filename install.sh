@@ -58,3 +58,17 @@ else
         exit 1
     fi
 fi
+
+# Synchronize template files
+echo "Synchronizing template files..."
+if [[ -d "./template/" ]]; then
+    rsync -r ./template/ /usr/local/hestia/data/templates/web/nginx/
+    if [[ $? -eq 0 ]]; then
+        echo "Template files synchronized successfully."
+    else
+        echo "Failed to synchronize template files."
+        exit 1
+    fi
+else
+    echo "Template directory './template/' does not exist. Skipping synchronization."
+fi
