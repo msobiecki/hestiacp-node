@@ -40,7 +40,7 @@ else
     [ -s "\$NVM_DIR/nvm.sh" ] && \. "\$NVM_DIR/nvm.sh"
     [ -s "\$NVM_DIR/bash_completion" ] && \. "\$NVM_DIR/bash_completion"
     export PATH="/opt/nvm:\$PATH"
-    EOL
+EOL
 
     # Add NVM to root's profile
     echo "Adding NVM to root's profile..."
@@ -49,7 +49,7 @@ else
     [ -s "\$NVM_DIR/nvm.sh" ] && \. "\$NVM_DIR/nvm.sh"
     [ -s "\$NVM_DIR/bash_completion" ] && \. "\$NVM_DIR/bash_completion"
     export PATH="/opt/nvm:\$PATH"
-    EOL
+EOL
 
     # Apply the changes
     source /etc/profile
