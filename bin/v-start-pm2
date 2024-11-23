@@ -2,7 +2,7 @@
 # info: start web app in PM2
 # options: USER DOMAIN ENTRYPOINT
 #
-# example: v-start-pm2 admin wonderland.com ecosystem.config.js
+# example: v-start-pm2 admin domain.ltd ecosystem.config.js
 #
 # This function starts an installed app in PM2 for a specific user and domain
 #----------------------------------------------------------#
