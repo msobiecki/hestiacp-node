@@ -29,17 +29,17 @@ else
     }
 
     # Fetch the latest version number of NVM
-    LATEST_VERSION=$(git_latest_version "${NVM_REPO}")
+    LATEST_VERSION=$(git_latest_version "$NVM_REPO")
 
     if [[ -z "$LATEST_VERSION" ]]; then
         echo "Failed to retrieve the latest NVM version."
         exit 1
     fi
 
-    echo "Installing NVM version ${LATEST_VERSION}..."
+    echo "Installing NVM version $LATEST_VERSION..."
 
     # Download and run the NVM installation script
-    wget -qO- "https://raw.githubusercontent.com/${NVM_REPO}/${LATEST_VERSION}/install.sh" | bash
+    wget -qO- "https://raw.githubusercontent.com/$NVM_REPO/$LATEST_VERSION/install.sh" | bash
 
     # Move NVM to the /opt directory for global access
     mv ~/.nvm /opt/nvm
@@ -51,7 +51,7 @@ else
     [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" # Load NVM bash completion
     export PATH="/opt/nvm:$PATH"
 
-    echo "NVM version ${LATEST_VERSION} successfully installed."
+    echo "NVM version $LATEST_VERSION successfully installed."
 
     # Install Node.js (latest LTS version)
     echo "Installing Node.js (latest LTS version)..."
