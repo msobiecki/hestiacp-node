@@ -25,24 +25,6 @@ server {
 		return 404;
 	}
 
-	location / {
-		proxy_pass https://%ip%:%web_ssl_port%;
-
-		location ~* ^.+\.(%proxy_extensions%)$ {
-			try_files  $uri @fallback;
-
-			root       %sdocroot%;
-			access_log /var/log/%web_system%/domains/%domain%.log combined;
-			access_log /var/log/%web_system%/domains/%domain%.bytes bytes;
-
-			expires    max;
-		}
-	}
-
-	location @fallback {
-		proxy_pass https://%ip%:%web_ssl_port%;
-	}
-
 	location /error/ {
 		alias %home%/%user%/web/%domain%/document_errors/;
 	}
