@@ -39,4 +39,22 @@ else
     export PATH="/opt/nvm:$PATH"
 
     echo "NVM version ${LATEST_VERSION} successfully installed."
+
+    # Install Node.js (latest LTS version)
+    echo "Installing Node.js (latest LTS version)..."
+    nvm install --lts
+    nvm use --lts
+    nvm alias default lts/*
+
+    echo "Node.js and npm installed successfully."
+
+    # Install PM2 globally
+    echo "Installing PM2 globally..."
+    npm install -g pm2
+    if [[ $? -eq 0 ]]; then
+        echo "PM2 installed successfully."
+    else
+        echo "Failed to install PM2."
+        exit 1
+    fi
 fi
