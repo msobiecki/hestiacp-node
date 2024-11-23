@@ -93,16 +93,19 @@ else
 fi
 
 # Add start-all-pm2 to cron.d
-if [[ -f "$CRON_SRC_DIR/start-all-pm2" ]]; then
-    echo "Copying start-all-pm2 script to $CRON_DST_DIR..."
-    cp "$CRON_SRC_DIR/start-all-pm2" "$CRON_DST_DIR/"
+CRON_SRC_DIR="./cron"
+CRON_DIR="/etc/cron.d"
+CRON_JOB_NAME="start-all-pm2"
+if [[ -f "$CRON_SRC_DIR/$CRON_JOB_NAME" ]]; then
+    echo "Copying $CRON_JOB_NAME script to $CRON_DIR..."
+    cp "$CRON_SRC_DIR/$CRON_JOB_NAME" "$CRON_DIR/"
     
     # Ensure the cron file has the correct permissions
-    chmod 644 "$CRON_DST_DIR/start-all-pm2"
+    chmod 644 "$CRON_DIR/$CRON_JOB_NAME"
 
-    echo "start-all-pm2 copied to $CRON_DST_DIR and permissions set."
+    echo "$CRON_JOB_NAME copied to $CRON_DIR and permissions set."
 else
-    echo "start-all-pm2 script not found in '$CRON_SRC_DIR'. Skipping cron job setup."
+    echo "$CRON_JOB_NAME script not found in '$CRON_SRC_DIR'. Skipping cron job setup."
 fi
 
 # Notify installation has finished
