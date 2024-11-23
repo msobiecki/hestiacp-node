@@ -55,7 +55,7 @@ Before running the installation script, ensure the following:
 ### Clone and Download
 To download the repository and run the setup script, execute the following command:
 ```
-curl -fsSL https://raw.githubusercontent.com/msobiecki/hestiacp-node/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/msobiecki/hestiacp-node/refs/heads/master/install.sh | bash
 ```
 This command will download and automatically execute the `install.sh` script from the repository.
 
