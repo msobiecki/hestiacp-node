@@ -142,3 +142,11 @@ pm2 logs
 sudo crontab -l
 ```
 - If you encounter permission issues, make sure the scripts in `/usr/local/hestia/bin/` have the correct executable permissions.
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
+
+---
+
+Feel free to contribute to this repository by opening issues or submitting pull requests. Happy coding!
