@@ -17,14 +17,12 @@ else
     
         # Construct the URL for the latest release
         url="https://github.com/$repo/releases/latest"
-
-        echo "Request URL: $url"
         
         # Fetch the latest release URL
         response=$(curl -fsSL -o /dev/null -w "%{redirect_url}" "$url")
     
         # Debug: Print the response to check the URL
-        echo "Response URL: $response"
+        echo "Request URL: $url Response URL: $response"
     
         # Check if the response is empty or returned a 404 error
         if [ -z "$response" ]; then
