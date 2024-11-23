@@ -38,15 +38,27 @@ else
     echo "Template directory does not exist. Skipping template file removal."
 fi
 
-# Remove the v-start-pm2 script from bin directory
+# Remove synchronized bin files
 HESTIA_BIN_DIR="/usr/local/hestia/bin"
-HESTIA_PM2_SCRIPT_NAME="v-start-pm2"
-if [[ -f "$HESTIA_BIN_DIR/$HESTIA_PM2_SCRIPT_NAME" ]]; then
-    echo "Removing $HESTIA_PM2_SCRIPT_NAME from $HESTIA_BIN_DIR..."
-    rm -f "$HESTIA_BIN_DIR/$HESTIA_PM2_SCRIPT_NAME"
-    echo "$HESTIA_PM2_SCRIPT_NAME removed."
+HESTIA_BIN_SRC_DIR="./bin"
+if [[ -d "$HESTIA_BIN_SRC_DIR" ]]; then
+    echo "Removing files from $HESTIA_BIN_DIR..."
+
+    # Loop through all files in the source directory
+    for file in "$HESTIA_BIN_SRC_DIR"/*; do
+        script_name=$(basename "$file")
+        
+        # If the file exists in the target directory, remove it
+        if [[ -f "$HESTIA_BIN_DIR/$script_name" ]]; then
+            echo "Removing $script_name from $HESTIA_BIN_DIR..."
+            rm -f "$HESTIA_BIN_DIR/$script_name"
+            echo "$script_name removed."
+        else
+            echo "$script_name not found in $HESTIA_BIN_DIR. Skipping removal."
+        fi
+    done
 else
-    echo "$HESTIA_PM2_SCRIPT_NAME not found in $HESTIA_BIN_DIR. Skipping bin removal."
+    echo "Source directory '$HESTIA_BIN_SRC_DIR' not found. Skipping file removal."
 fi
 
 # Notify uninstallation has finished
