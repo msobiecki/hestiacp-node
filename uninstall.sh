@@ -52,12 +52,27 @@ echo "NVM uninstallation completed."
 
 # Remove synchronized template files
 HESTIA_WEB_NGINX_TEMPLATE_DIR="/usr/local/hestia/data/templates/web/nginx/"
-if [[ -d "$HESTIA_WEB_NGINX_TEMPLATE_DIR" ]]; then
-    echo "Removing synchronized template files from $HESTIA_WEB_NGINX_TEMPLATE_DIR..."
-    find "$HESTIA_WEB_NGINX_TEMPLATE_DIR" -type f -exec rm -f {} +
-    echo "Template files removed."
+HESTIA_WEB_NGINX_TEMPLATE_SRC_DIR="./templates"
+if [[ -d "$HESTIA_WEB_NGINX_TEMPLATE_DIR" && -d "$HESTIA_WEB_NGINX_TEMPLATE_SRC_DIR" ]]; then
+    echo "Removing matching template files from $HESTIA_WEB_NGINX_TEMPLATE_DIR based on names in $HESTIA_WEB_NGINX_TEMPLATE_SRC_DIR..."
+
+    # Loop through each file in the source template directory
+    for template_file in "$HESTIA_WEB_NGINX_TEMPLATE_SRC_DIR"/*; do
+        template_name=$(basename "$template_file")
+        target_file="$HESTIA_WEB_NGINX_TEMPLATE_DIR/$template_name"
+        
+        # If the file exists in the target directory, remove it
+        if [[ -f "$target_file" ]]; then
+            echo "Removing $target_file..."
+            rm -f "$target_file"
+        else
+            echo "$template_name does not exist in $HESTIA_WEB_NGINX_TEMPLATE_DIR. Skipping."
+        fi
+    done
+
+    echo "Matching template files removed."
 else
-    echo "Template directory does not exist. Skipping template file removal."
+    echo "One or both directories do not exist. Skipping template file removal."
 fi
 
 # Remove synchronized bin files
