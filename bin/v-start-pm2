@@ -1,0 +1,84 @@
+#!/bin/bash
+# info: start web app in PM2
+# options: USER DOMAIN ENTRYPOINT
+#
+# example: v-start-pm2 admin wonderland.com ecosystem.config.js
+#
+# This function starts an installed app in PM2 for a specific user and domain
+#----------------------------------------------------------#
+#                Variables & Functions                     #
+#----------------------------------------------------------#
+
+# Argument definition
+user=$1
+domain=$2
+entrypoint=$3
+
+# Includes
+# shellcheck source=/etc/hestiacp/hestia.conf
+source /etc/hestiacp/hestia.conf
+# shellcheck source=/usr/local/hestia/func/main.sh
+source $HESTIA/func/main.sh
+# shellcheck source=/usr/local/hestia/func/domain.sh
+source $HESTIA/func/domain.sh
+# load config file
+source_conf "$HESTIA/conf/hestia.conf"
+
+#----------------------------------------------------------#
+#                    Verifications                         #
+#----------------------------------------------------------#
+
+# Verifying that 3 arguments are passed (USER, DOMAIN, ENTRYPOINT)
+check_args '3' "$#" 'USER DOMAIN ENTRYPOINT'
+
+# Format and verify domain
+format_domain
+
+# Check if the user exists in the system
+is_object_valid 'user' 'USER' "$user"
+is_object_unsuspended 'user' 'USER' "$user"
+
+# Check if the user has the required web domains package
+is_package_full 'WEB_DOMAINS'
+
+# Verify if the user's web directory is a symlink
+is_dir_symlink "$HOMEDIR/$user/web"
+is_dir_symlink "$HOMEDIR/$user/web/$domain"
+
+# Verify if the user is the owner of the domain
+is_base_domain_owner "$domain"
+
+# Perform verification if read-only mode is enabled
+check_hestia_demo_mode
+
+#----------------------------------------------------------#
+#                       Action                             #
+#----------------------------------------------------------#
+
+# Check if the entrypoint (ecosystem.config.js) exists
+entrypoint_path="$HOMEDIR/$user/web/$domain/private/node/$entrypoint"
+
+if [ -f "$entrypoint_path" ]; then
+    echo "Starting PM2 for $user's domain $domain with $entrypoint..."
+
+    # Start the Node.js application with pm2
+    pm2 start "$entrypoint_path"
+    pm2 save
+
+    #----------------------------------------------------------#
+    #                       Hestia                             #
+    #----------------------------------------------------------#
+
+    # Logging the successful action
+    $BIN/v-log-action "$user" "Info" "Web" "Started web app in PM2 for domain $domain."
+    log_event "$OK" "$ARGUMENTS"
+
+else
+    echo "Error: $entrypoint does not exist for $user's domain $domain."
+
+    # Logging the failure
+    $BIN/v-log-action "$user" "Error" "Web" "Failed to start web app in PM2 for domain $domain. Entry point $entrypoint not found."
+    log_event "$ERROR" "$ARGUMENTS"
+fi
+
+exit
