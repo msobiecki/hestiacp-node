@@ -18,7 +18,7 @@ else
         # Construct the URL for the latest release
         url="https://github.com/$repo/releases/latest"
 
-        echo "Response URL: $url"
+        echo "Request URL: $url"
         
         # Fetch the latest release URL
         response=$(curl -fsSL -o /dev/null -w "%{redirect_url}" "$url")
