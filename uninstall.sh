@@ -61,6 +61,17 @@ else
     echo "Source directory '$HESTIA_BIN_SRC_DIR' not found. Skipping file removal."
 fi
 
+# Remove the start-all-pm2 cron job
+CRON_DIR="/etc/cron.d"
+CRON_JOB_NAME="start-all-pm2"
+if [[ -f "$CRON_DIR/$CRON_JOB_NAME" ]]; then
+    echo "Removing $CRON_JOB_NAME from $CRON_DIR..."
+    rm -f "$CRON_DIR/$CRON_JOB_NAME"
+    echo "$CRON_JOB_NAME removed from cron jobs."
+else
+    echo "$CRON_JOB_NAME not found in $CRON_DIR. Skipping cron removal."
+fi
+
 # Notify uninstallation has finished
 echo "Sending uninstallation notification..."
 /usr/local/hestia/bin/v-add-user-notification admin "Node application setup" "Node application setup has been uninstalled."
