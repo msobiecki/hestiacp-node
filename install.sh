@@ -44,6 +44,9 @@ else
     # Apply the changes
     source /etc/profile
 
+    # Source /root/.profile for root-specific changes
+    source /root/.profile
+
     echo "NVM version $LATEST_VERSION successfully installed."
 
     # Install Node.js (latest LTS version)
