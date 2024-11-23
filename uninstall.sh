@@ -14,10 +14,10 @@ if [[ -d "/opt/nvm" ]]; then
     sudo sed -i "/export PATH='\/opt\/nvm:\$PATH'/d" /etc/profile
     
     # Remove NVM-related lines from /root/.profile
-    sudo sed -i "/export NVM_DIR='\/root\/.nvm'/d" /root/.profile
+    sudo sed -i "/export NVM_DIR='\/opt\/nvm'/d" /root/.profile
+    sudo sed -i "/export PATH='\/opt\/nvm:\$PATH'/d" /root/.profile
     sudo sed -i "/\[ -s '\$NVM_DIR\/nvm.sh' \] && \. '\$NVM_DIR\/nvm.sh'/d" /root/.profile
     sudo sed -i "/\[ -s '\$NVM_DIR\/bash_completion' \] && \. '\$NVM_DIR\/bash_completion'/d" /root/.profile
-    sudo sed -i "/export PATH='\/root\/.nvm:\$PATH'/d" /root/.profile
 
     echo "NVM and Node.js removed."
 else
