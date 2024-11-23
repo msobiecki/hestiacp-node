@@ -73,6 +73,16 @@ else
     echo "Template directory './template/' does not exist. Skipping synchronization."
 fi
 
+# Copy the v-start-pm2 script to bin directory
+echo "Copying v-start-pm2..."
+if [[ -f "./bin/v-start-pm2" ]]; then
+    cp "./bin/v-start-pm2" "/usr/local/hestia/bin/"
+    chmod +x "/usr/local/hestia/bin/v-start-pm2"
+    echo "v-start-pm2 copied and made executable successfully."
+else
+    echo "v-start-pm2 script not found at './bin/'. Skipping this step."
+fi
+
 # Notify installation has finished
 echo "Sending installation notification..."
 /usr/local/hestia/bin/v-add-user-notification admin "Node application setup" "Node application setup has finished installing."
