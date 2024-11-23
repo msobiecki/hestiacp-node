@@ -41,11 +41,23 @@ for u in `"$HESTIA"/bin/v-list-users plain | cut -f1`; do
             # Check if pm2 started successfully
             if [ $? -eq 0 ]; then
                 echo "Successfully started PM2 for $u's domain $domain."
+
+                # Logging the successful action
+                $BIN/v-log-action "$u" "Info" "Web" "Started Node.js app in PM2 for domain $domain."
+                log_event "$OK" "$ARGUMENTS"
             else
                 echo "Failed to start PM2 for $u's domain $domain."
+
+                # Logging the failed action
+                $BIN/v-log-action "$u" "Error" "Web" "Failed to start Node.js app in PM2 for domain $domain."
+                log_event "$ERROR" "$ARGUMENTS"
             fi
         else
             echo "No ecosystem.config.js found for $u's domain $domain. Skipping..."
+
+            # Logging the missing ecosystem.config.js
+            $BIN/v-log-action "$u" "Warning" "Web" "No ecosystem.config.js found for domain $domain."
+            log_event "$WARNING" "$ARGUMENTS"
         fi
     done
 done
