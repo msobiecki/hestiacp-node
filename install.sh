@@ -25,21 +25,31 @@ else
     # Download and run the NVM installation script
     wget -qO- "https://raw.githubusercontent.com/$NVM_REPO/$LATEST_VERSION/install.sh" | bash
 
-    # Move NVM to the /opt directory for global access
-    mv ~/.nvm /opt/nvm
-    chmod -R 755 /opt/nvm
-    
-    # Set up environment variables for NVM system-wide
-    echo "export NVM_DIR='/opt/nvm'" | sudo tee -a /etc/profile
-    echo "[ -s '\$NVM_DIR/nvm.sh' ] && . '\$NVM_DIR/nvm.sh'" | sudo tee -a /etc/profile
-    echo "[ -s '\$NVM_DIR/bash_completion' ] && . '\$NVM_DIR/bash_completion'" | sudo tee -a /etc/profile
-    echo "export PATH='/opt/nvm:\$PATH'" | sudo tee -a /etc/profile
 
-    # Also add to root's environment files
-    echo "export NVM_DIR='/opt/nvm'" | sudo tee -a /root/.profile
-    echo "[ -s '\$NVM_DIR/nvm.sh' ] && . '\$NVM_DIR/nvm.sh'" | sudo tee -a /root/.profile
-    echo "[ -s '\$NVM_DIR/bash_completion' ] && . '\$NVM_DIR/bash_completion'" | sudo tee -a /root/.profile
-    echo "export PATH='/opt/nvm:\$PATH'" | sudo tee -a /root/.profile
+    # Move NVM to /opt/nvm for global access
+    if [[ -d ~/.nvm ]]; then
+        echo "Moving NVM to /opt/nvm..."
+        mv ~/.nvm /opt/nvm
+        chmod -R 755 /opt/nvm
+    fi
+
+    # Add NVM to system-wide environment
+    echo "Adding NVM to /etc/profile..."
+    sudo tee -a /etc/profile <<EOL
+    export NVM_DIR="/opt/nvm"
+    [ -s "\$NVM_DIR/nvm.sh" ] && \. "\$NVM_DIR/nvm.sh"
+    [ -s "\$NVM_DIR/bash_completion" ] && \. "\$NVM_DIR/bash_completion"
+    export PATH="/opt/nvm:\$PATH"
+    EOL
+
+    # Add NVM to root's profile
+    echo "Adding NVM to root's profile..."
+    sudo tee -a /root/.profile <<EOL
+    export NVM_DIR="/opt/nvm"
+    [ -s "\$NVM_DIR/nvm.sh" ] && \. "\$NVM_DIR/nvm.sh"
+    [ -s "\$NVM_DIR/bash_completion" ] && \. "\$NVM_DIR/bash_completion"
+    export PATH="/opt/nvm:\$PATH"
+    EOL
 
     # Apply the changes
     source /etc/profile
@@ -49,21 +59,29 @@ else
 
     echo "NVM version $LATEST_VERSION successfully installed."
 
-    # Install Node.js (latest LTS version)
-    echo "Installing Node.js (latest LTS version)..."
-    nvm install --lts
-    nvm use --lts
-    nvm alias default lts/*
+    # Verify that NVM is working
+    echo "Verifying NVM installation..."
+    if command -v nvm >/dev/null 2>&1; then
+    
+        # Install Node.js (latest LTS version)
+        echo "Installing Node.js (latest LTS version)..."
+        nvm install --lts
+        nvm use --lts
+        nvm alias default lts/*
 
-    echo "Node.js and npm installed successfully."
-
-    # Install PM2 globally
-    echo "Installing PM2 globally..."
-    npm install -g pm2
-    if [[ $? -eq 0 ]]; then
-        echo "PM2 installed successfully."
+        echo "Node.js and npm installed successfully."
+    
+        # Install PM2 globally
+        echo "Installing PM2 globally..."
+        npm install -g pm2
+        if [[ $? -eq 0 ]]; then
+            echo "PM2 installed successfully."
+        else
+            echo "Failed to install PM2."
+            exit 1
+        fi
     else
-        echo "Failed to install PM2."
+        echo "NVM is not available. Please check the setup."
         exit 1
     fi
 fi
