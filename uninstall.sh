@@ -6,10 +6,19 @@ echo "Starting the uninstallation process..."
 if [[ -d "/opt/nvm" ]]; then
     echo "Removing NVM and Node.js..."
     rm -rf /opt/nvm
+    
+    # Remove NVM-related lines from /etc/profile
     sudo sed -i '/export NVM_DIR=\/opt\/nvm/d' /etc/profile
     sudo sed -i '/\[ -s "\$NVM_DIR\/nvm.sh" \] && \. "\$NVM_DIR\/nvm.sh"/d' /etc/profile
     sudo sed -i '/\[ -s "\$NVM_DIR\/bash_completion" \] && \. "\$NVM_DIR\/bash_completion"/d' /etc/profile
     sudo sed -i '/export PATH="\/opt\/nvm:\$PATH"/d' /etc/profile
+
+    # Remove any root-specific NVM lines if they exist (from /root/.profile or /root/.bashrc)
+    sudo sed -i '/export NVM_DIR=\/root\/.nvm/d' /root/.profile
+    sudo sed -i '/\[ -s "\$NVM_DIR\/nvm.sh" \] && \. "\$NVM_DIR\/nvm.sh"/d' /root/.profile
+    sudo sed -i '/\[ -s "\$NVM_DIR\/bash_completion" \] && \. "\$NVM_DIR\/bash_completion"/d' /root/.profile
+    sudo sed -i '/export PATH="\/root\/.nvm:\$PATH"/d' /root/.profile
+
     echo "NVM and Node.js removed."
 else
     echo "NVM is not installed. Skipping NVM removal."
