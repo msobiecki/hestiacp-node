@@ -51,17 +51,17 @@ echo "NVM uninstallation completed."
 
 # Remove synchronized template files
 HESTIA_WEB_NGINX_TEMPLATE_DIR="/usr/local/hestia/data/templates/web/nginx/"
-HESTIA_WEB_NGINX_TEMPLATE_SRC_DIR="./templates"
+HESTIA_WEB_NGINX_TEMPLATE_SRC_DIR="./templates/"
 if [[ -d "$HESTIA_WEB_NGINX_TEMPLATE_DIR" && -d "$HESTIA_WEB_NGINX_TEMPLATE_SRC_DIR" ]]; then
     echo "Removing matching template files from $HESTIA_WEB_NGINX_TEMPLATE_DIR based on names in $HESTIA_WEB_NGINX_TEMPLATE_SRC_DIR..."
 
     # Loop through each file in the source template directory recursively (including subdirectories)
     find "$HESTIA_WEB_NGINX_TEMPLATE_SRC_DIR" -type f | while read template_file; do
         # Get the relative path of the file (excluding the source directory path)
-        relative_path="${template_file#$HESTIA_WEB_NGINX_TEMPLATE_SRC_DIR/}"
+        relative_path="${template_file#$HESTIA_WEB_NGINX_TEMPLATE_SRC_DIR}"
         
         # Construct the target file path in the destination directory
-        target_file="$HESTIA_WEB_NGINX_TEMPLATE_DIR/$relative_path"
+        target_file="$HESTIA_WEB_NGINX_TEMPLATE_DIR$relative_path"
         
         # If the file exists in the target directory, remove it
         if [[ -f "$target_file" ]]; then
