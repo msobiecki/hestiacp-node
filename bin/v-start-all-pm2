@@ -28,7 +28,7 @@ for u in `"$HESTIA"/bin/v-list-users plain | cut -f1`; do
     home=$(grep "^$u:" /etc/passwd | cut -d":" -f6)
 
     # Loop through all Node.js domains for the user
-    for domain in `"$HESTIA"/bin/v-list-web-domains $u plain | cut -f1,18 | grep $'\t'"node$" | cut -f1`; do
+    for domain in `"$HESTIA"/bin/v-list-web-domains $u plain | cut -f1,7 | grep $'\t'"node$" | cut -f1`; do
         # Path to the ecosystem.config.js file for the domain
         entrypoint="ecosystem.config.js"
         entrypoint_path="$home/web/$domain/private/node/$entrypoint"
