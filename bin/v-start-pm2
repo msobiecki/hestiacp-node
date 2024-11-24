@@ -72,7 +72,7 @@ else
     echo "Error: $entrypoint does not exist for $user's domain $domain."
 
     # Logging the failure
-    $BIN/v-log-action "$user" "Error" "Web" "Failed to start web app in PM2 for domain $domain. Entry point $entrypoint not found."
+    $BIN/v-log-action "$user" "Warning" "Web" "Failed to start web app in PM2 for domain $domain. Entry point $entrypoint not found."
     log_event "$ERROR" "$ARGUMENTS"
 fi
 
