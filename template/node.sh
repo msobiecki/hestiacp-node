@@ -1,5 +1,11 @@
 #!/bin/bash
 
+user=$1
+domain=$2
+ip=$3
+home=$4
+docroot=$5
+
 # Path to the node application
 path="$home/$user/web/$domain/private/node"
 
