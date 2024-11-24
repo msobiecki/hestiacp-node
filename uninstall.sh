@@ -78,19 +78,19 @@ else
 fi
 
 # Remove synchronized bin files
-HESTIA_BIN_DIR="/usr/local/hestia/bin"
-HESTIA_BIN_SRC_DIR="./bin"
+HESTIA_BIN_DIR="/usr/local/hestia/bin/"
+HESTIA_BIN_SRC_DIR="./bin/"
 if [[ -d "$HESTIA_BIN_SRC_DIR" ]]; then
     echo "Removing files from $HESTIA_BIN_DIR..."
 
     # Loop through all files in the source directory
-    for file in "$HESTIA_BIN_SRC_DIR"/*; do
+    for file in "$HESTIA_BIN_SRC_DIR"*; do
         script_name=$(basename "$file")
         
         # If the file exists in the target directory, remove it
-        if [[ -f "$HESTIA_BIN_DIR/$script_name" ]]; then
+        if [[ -f "$HESTIA_BIN_DIR$script_name" ]]; then
             echo "Removing $script_name from $HESTIA_BIN_DIR..."
-            rm -f "$HESTIA_BIN_DIR/$script_name"
+            rm -f "$HESTIA_BIN_DIR$script_name"
             echo "$script_name removed."
         else
             echo "$script_name not found in $HESTIA_BIN_DIR. Skipping removal."
