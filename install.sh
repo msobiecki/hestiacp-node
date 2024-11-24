@@ -109,7 +109,7 @@ if [[ -d "$HESTIA_BIN_SRC_DIR" ]]; then
     echo "Syncing files from $HESTIA_BIN_SRC_DIR to $HESTIA_BIN_DIR..."
 
     # Use rsync to copy all files from the source to the destination
-    rsync -av --progress "$HESTIA_BIN_SRC_DIR" "$HESTIA_BIN_DIR"
+    rsync -av --progress $HESTIA_BIN_SRC_DIR $HESTIA_BIN_DIR
 
     # Make all the copied files executable
     chmod +x "$HESTIA_BIN_DIR"*
