@@ -103,16 +103,16 @@ else
 fi
 
 # Synchronize bin files
-HESTIA_BIN_SRC_DIR="./bin"
-HESTIA_BIN_DIR="/usr/local/hestia/bin"
+HESTIA_BIN_SRC_DIR="./bin/"
+HESTIA_BIN_DIR="/usr/local/hestia/bin/"
 if [[ -d "$HESTIA_BIN_SRC_DIR" ]]; then
     echo "Syncing files from $HESTIA_BIN_SRC_DIR to $HESTIA_BIN_DIR..."
 
     # Use rsync to copy all files from the source to the destination
-    rsync -av --progress "$HESTIA_BIN_SRC_DIR/" "$HESTIA_BIN_DIR/"
+    rsync -av --progress "$HESTIA_BIN_SRC_DIR" "$HESTIA_BIN_DIR"
 
     # Make all the copied files executable
-    chmod +x "$HESTIA_BIN_DIR"/*
+    chmod +x "$HESTIA_BIN_DIR"*
 
     echo "All files from $HESTIA_BIN_SRC_DIR copied and made executable successfully."
 else
