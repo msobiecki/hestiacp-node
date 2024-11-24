@@ -106,10 +106,10 @@ The cron job is installed in `/etc/cron.d/start-all-pm2`.
 1. To start a specific Node.js application for a user/domain, you can use the `v-start-pm2` script:
 
 ```
-sudo v-start-pm2
+sudo v-start-pm2 [USER] [DOMAIN] [ENTRYPOINT]
 ```
 
-This command will start all Node.js applications for all users and domains that are configured with Node.js.
+This command will start a specific Node.js application for a user/domain that are configured with Node.js application.
 
 2. To start all Node.js applications across all users and domains, use the `v-start-all-pm2` script:
 ```
