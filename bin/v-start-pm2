@@ -65,20 +65,15 @@ if [ -f "$entrypoint_path" ]; then
     pm2 start "$entrypoint_path"
     pm2 save
 
-    #----------------------------------------------------------#
-    #                       Hestia                             #
-    #----------------------------------------------------------#
-
     # Logging the successful action
     $BIN/v-log-action "$user" "Info" "Web" "Started web app in PM2 for domain $domain."
     log_event "$OK" "$ARGUMENTS"
-
+    exit 0
 else
     echo "Error: $entrypoint does not exist for $user's domain $domain."
 
     # Logging the failure
     $BIN/v-log-action "$user" "Error" "Web" "Failed to start web app in PM2 for domain $domain. Entry point $entrypoint not found."
     log_event "$ERROR" "$ARGUMENTS"
+    exit 1
 fi
-
-exit
