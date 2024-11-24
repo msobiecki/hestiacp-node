@@ -24,41 +24,39 @@ source_conf "$HESTIA/conf/hestia.conf"
 #----------------------------------------------------------#
 
 # Loop through all users
-for u in `"$HESTIA"/bin/v-list-users plain | cut -f1`; do
-    home=$(grep "^$u:" /etc/passwd | cut -d":" -f6)
+for user in `"$HESTIA"/bin/v-list-users plain | cut -f1`; do
+    home=$(grep "^$user:" /etc/passwd | cut -d":" -f6)
 
     # Loop through all Node.js domains for the user
-    for domain in `"$HESTIA"/bin/v-list-web-domains $u plain | cut -f1,7 | grep $'\t'"node$" | cut -f1`; do
+    for domain in `"$HESTIA"/bin/v-list-web-domains $user plain | cut -f1,7 | grep $'\t'"node$" | cut -f1`; do
         # Path to the ecosystem.config.js file for the domain
         entrypoint="ecosystem.config.js"
         entrypoint_path="$home/web/$domain/private/node/$entrypoint"
 
         # Check if the ecosystem.config.js file exists
         if [ -f "$entrypoint_path" ]; then
-            echo "Starting PM2 for user $u's domain $domain with $ecosystem..."
-
             # Using the v-start-pm2 approach to start the app
-            /usr/local/hestia/bin/v-start-pm2 $u $domain $entrypoint
+            /usr/local/hestia/bin/v-start-pm2 $user $domain $entrypoint
 
             # Check if pm2 started successfully
             if [ $? -eq 0 ]; then
-                echo "Successfully started PM2 for $u's domain $domain."
+                echo "Successfully started PM2 for $user's domain $domain."
 
                 # Logging the successful action
-                $BIN/v-log-action "$u" "Info" "Web" "Started Node.js app in PM2 for domain $domain."
+                $BIN/v-log-action "$user" "Info" "Web" "Started web app in PM2 for domain $domain."
                 log_event "$OK" "$ARGUMENTS"
             else
-                echo "Failed to start PM2 for $u's domain $domain."
+                echo "Failed to start PM2 for $user's domain $domain."
 
                 # Logging the failed action
-                $BIN/v-log-action "$u" "Error" "Web" "Failed to start Node.js app in PM2 for domain $domain."
+                $BIN/v-log-action "$user" "Error" "Web" "Failed to start web app in PM2 for domain $domain."
                 log_event "$ERROR" "$ARGUMENTS"
             fi
         else
-            echo "No $entrypoint found for $u's domain $domain. Skipping..."
+            echo "No $entrypoint found for $user's domain $domain. Skipping..."
 
             # Logging the missing ecosystem.config.js
-            $BIN/v-log-action "$u" "Warning" "Web" "No $entrypoint found for domain $domain."
+            $BIN/v-log-action "$user" "Warning" "Web" "No $entrypoint found for domain $domain."
             log_event "$WARNING" "$ARGUMENTS"
         fi
     done
