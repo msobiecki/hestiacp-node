@@ -56,7 +56,6 @@ module.exports = {
         name: "$domain",
         cwd: "$cwd",
         script: "$entry",
-        instances: "$CLUSTER_NUMBER_OF_INSTANCES",
     }]
 }
 EOL
