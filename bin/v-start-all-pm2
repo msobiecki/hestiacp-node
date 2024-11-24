@@ -43,20 +43,20 @@ for user in `"$HESTIA"/bin/v-list-users plain | cut -f1`; do
                 echo "Successfully started PM2 for $user's domain $domain."
 
                 # Logging the successful action
-                $BIN/v-log-action "$user" "Info" "Web" "Started web app in PM2 for domain $domain."
+                $BIN/v-log-action "system" "Info" "Web" "Started web app in PM2 for $user's domain $domain."
                 log_event "$OK" "$ARGUMENTS"
             else
                 echo "Failed to start PM2 for $user's domain $domain."
 
                 # Logging the failed action
-                $BIN/v-log-action "$user" "Error" "Web" "Failed to start web app in PM2 for domain $domain."
+                $BIN/v-log-action "system" "Error" "Web" "Failed to start web app in PM2 for $user's domain $domain."
                 log_event "$ERROR" "$ARGUMENTS"
             fi
         else
             echo "No $entrypoint found for $user's domain $domain. Skipping..."
 
             # Logging the missing ecosystem.config.js
-            $BIN/v-log-action "$user" "Warning" "Web" "No $entrypoint found for domain $domain."
+            $BIN/v-log-action "system" "Warning" "Web" "No $entrypoint found for $user's domain $domain."
             log_event "$WARNING" "$ARGUMENTS"
         fi
     done
