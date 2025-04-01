@@ -55,15 +55,22 @@ check_hestia_demo_mode
 #                       Action                             #
 #----------------------------------------------------------#
 
+# Define PM2 home directory for the user
+export PM2_HOME="$HOMEDIR/$user/.pm2"
+
 # Check if the entrypoint (ecosystem.config.js) exists
 entrypoint_path="$HOMEDIR/$user/web/$domain/private/node/$entrypoint"
 
 if [ -f "$entrypoint_path" ]; then
     echo "Starting PM2 for $user's domain $domain with $entrypoint..."
 
-    # Start the Node.js application with pm2
-    pm2 start "$entrypoint_path"
-    pm2 save
+    # Ensure PM2_HOME exists
+    mkdir -p "$PM2_HOME"
+    chown -R "$user:$user" "$PM2_HOME"
+
+    # Start the Node.js application with PM2
+    su - "$user" -c "PM2_HOME=$PM2_HOME pm2 start '$entrypoint_path'"
+    su - "$user" -c "PM2_HOME=$PM2_HOME pm2 save"
 
     # Logging the successful action
     $BIN/v-log-action "$user" "Info" "Web" "Started web app in PM2 for domain $domain."
