@@ -59,9 +59,9 @@ check_hestia_demo_mode
 export PM2_HOME="$HOMEDIR/$user/.pm2"
 
 # Check if the entrypoint (ecosystem.config.js) exists
-entrypoint_path="$HOMEDIR/$user/web/$domain/private/node"
+entrypoint_path="$HOMEDIR/$user/web/$domain/private/node/"
 
-if [ -f "$entrypoint_path/$entrypoint" ]; then
+if [ -f "$entrypoint_path$entrypoint" ]; then
     echo "Starting PM2 for $user's domain $domain with $entrypoint..."
 
     # Ensure PM2_HOME exists
