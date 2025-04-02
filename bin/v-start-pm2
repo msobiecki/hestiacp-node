@@ -69,7 +69,6 @@ if [ -f "$entrypoint_path$entrypoint" ]; then
     chown -R "$user:$user" "$PM2_HOME"
 
     # Start the Node.js application with PM2
-    cd $entrypoint_path
     su - "$user" -c "PM2_HOME=$PM2_HOME cd '$entrypoint_path' && pm2 start '$entrypoint'"
     su - "$user" -c "PM2_HOME=$PM2_HOME pm2 save"
 
